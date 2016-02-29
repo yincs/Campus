@@ -1,15 +1,12 @@
 package com.changs.kelly.campus.dao;
 
-import java.awt.List;
-import java.sql.Connection;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.changs.kelly.campus.db.DbConn;
 
 public abstract class Dao<T> {
-	protected Connection mConn;
+    protected JdbcTemplate jdbcTemplate;
 
 	public Dao() {
-		this.mConn = DbConn.getConn();
 	}
 	  
 	public abstract boolean insert(T t);
