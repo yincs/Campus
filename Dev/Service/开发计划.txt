@@ -1,0 +1,9 @@
+1、实现一个简单表的增删改查
+
+表设计：
+	id int 
+	name String
+	pwd  String
+	
+实现内容：
+	用post增删改查
