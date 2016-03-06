@@ -1,8 +1,10 @@
 package com.changs.kelly.campus.service;
 
-import com.changs.kelly.campus.common.BaseService;
+import org.springframework.stereotype.Service;
+
 import com.changs.kelly.campus.entity.User;
 
+@Service
 public class UserService extends BaseService<User> {
 
 	public void insert(User user) {
@@ -25,6 +27,10 @@ public class UserService extends BaseService<User> {
 		} else {
 			System.out.println("delete fail");
 		}
+	}
+
+	public void test() {
+		System.out.println("userService.test");
 	}
 
 }

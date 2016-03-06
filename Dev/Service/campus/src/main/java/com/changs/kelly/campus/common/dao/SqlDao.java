@@ -1,6 +1,6 @@
-package com.changs.kelly.campus.common;
+package com.changs.kelly.campus.common.dao;
 
-public interface BaseSqlDao<T> {
+public interface SqlDao<T> {
 
 	abstract int insert(T t);
 

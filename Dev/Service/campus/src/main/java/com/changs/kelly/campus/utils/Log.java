@@ -6,11 +6,13 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.jpa.criteria.expression.function.LengthFunction;
+
 public class Log {
 	public static void infoRequest(HttpServletRequest request) {
 		System.out.println(request.getRequestURL());
-		System.out.println(request.getQueryString());
 		System.out.println(request.getMethod());
+		System.out.println(request.getQueryString());
 		System.out.println(request.getRemoteAddr());
 		System.out.println(request.getRemoteHost());
 		System.out.println(request.getRemotePort());
@@ -20,7 +22,7 @@ public class Log {
 		while (e.hasMoreElements()) {
 			String name = (String) e.nextElement();
 			String value = request.getHeader(name);
-			System.out.println("enumeration:" + name + ":" + value);
+			System.out.println( name + ":" + value);
 		}
 
 		System.out.println(request.getContentLength());
@@ -36,8 +38,9 @@ public class Log {
 			InputStream stream = request.getInputStream();
 			byte[] bs = new byte[1024];
 			StringBuffer buffer = new StringBuffer();
-			while ((stream.read(bs) != -1)) {
-				buffer.append(new String(bs));
+			int length;
+			while ((length = stream.read(bs)) != -1) {
+				buffer.append(new String(bs, 0, length));
 			}
 			System.out.println(buffer.toString());
 

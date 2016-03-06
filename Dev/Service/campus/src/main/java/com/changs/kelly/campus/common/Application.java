@@ -1,4 +1,4 @@
-package com.changs.kelly.campus.spring;
+package com.changs.kelly.campus.common;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

@@ -85,7 +85,22 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson-core.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.jr</groupId>
+			<artifactId>jackson-jr-all</artifactId>
+			<version>${jackson-core.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160212</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>campus</finalName>

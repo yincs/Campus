@@ -1,13 +1,12 @@
-package com.changs.kelly.campus.common.impl;
+package com.changs.kelly.campus.common.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.changs.kelly.campus.common.BaseSqlDao;
-import com.changs.kelly.campus.spring.Application;
+import com.changs.kelly.campus.common.Application;
 
-public class BaseSqDaoImpl<T> implements BaseSqlDao<T> {
+public class SqDaoImpl<T> implements SqlDao<T> {
 
 	protected static SessionFactory sessionFactory;
 	static {
