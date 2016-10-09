@@ -1,70 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-	version="3.0">
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+
 	<display-name>Archetype Created Web Application</display-name>
-	<!-- 该servlet为tomcat,jetty等容器提供,将静态资源映射从/改为/static/目录， 如原来访问 http://localhost/foo.css 
-		,现在http://localhost/static/foo.css -->
-	<!-- 不拦截静态文件 -->
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/js/*</url-pattern>
-		<url-pattern>/css/*</url-pattern>
-		<url-pattern>/images/*</url-pattern>
-		<url-pattern>/fonts/*</url-pattern>
-	</servlet-mapping>
 
-	<!-- 配置编码方式过滤器 ,注意一点，要配置所有的过滤器，最前面 -->
-	<filter>
-		<filter-name>encodingFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-		<init-param>
-			<param-name>forceEncoding</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	<!-- 配置spring的IOC容器 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
 
-	<!-- servlet -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- 配置 Springmvc 的 DispatcherServlet -->
 	<servlet>
 		<servlet-name>dispatcherServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring/dispatcherServlet.xml</param-value>
+			<param-value>classpath:/spring/spring-mvc.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>dispatcherServlet</servlet-name>
-		<!-- 所有的的请求，都会被DispatcherServlet处理 -->
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-	<!-- 配置spring的IOC容器 -->
-	<context-param>
-		<param-name>applicationContext</param-name>
-		<param-value>classpath:spring/applicationContext.xml</param-value>
-	</context-param>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-
-	<!-- 为了使用SpringMVC框架实现REST，需配置 HiddenHttpMethodFilter -->
-	<filter>
-		<filter-name>hiddenHttpMethodFilter</filter-name>
-		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>hiddenHttpMethodFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
 </web-app>
