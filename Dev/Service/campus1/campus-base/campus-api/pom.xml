@@ -22,6 +22,9 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
+				<configuration>
+					<war>${basedir}/target/campus-api.war</war>
+				</configuration>
 			</plugin>
 			<!-- define the project compile level -->
 			<plugin>

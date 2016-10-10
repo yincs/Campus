@@ -44,12 +44,15 @@
 		</property>
 	</bean>
 
-
 	<!-- 配置视图解析器 -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/"></property>
 		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<bean id="handlerExceptionResolver"
+		class="org.changs.campus.api.HandlerResolver">
 	</bean>
 
 	<mvc:default-servlet-handler />
