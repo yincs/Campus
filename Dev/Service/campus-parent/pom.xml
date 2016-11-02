@@ -157,5 +157,6 @@
 	<modules>
 		<module>campus-core</module>
     <module>campus-api</module>
+    <module>campus</module>
   </modules>
 </project>
