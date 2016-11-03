@@ -1,5 +1,7 @@
 package org.changs.campus.domain;
 
+import javax.validation.constraints.NotNull;
+
 public class Account {
 	/**
 	 *
@@ -17,6 +19,7 @@ public class Account {
 	 *
 	 * @mbg.generated
 	 */
+	@NotNull(message = "account 不能为空")
 	private String account;
 
 	/**
