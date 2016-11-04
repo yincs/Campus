@@ -14,7 +14,6 @@ import org.changs.campus.domain.AccountExample.Criteria;
 import org.changs.campus.domain.User;
 import org.changs.campus.service.AccountService;
 import org.changs.campus.utils.ListUtils;
-import org.changs.campus.utils.TextUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,11 +29,6 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public AppResp<Object> login(Account account) {
 		log.debug("login");
-		AppResp<Object> validate = validate(account);
-		if (validate != null) {
-			return validate;
-		}
-
 		AccountExample condition = new AccountExample();
 		Criteria criteria = condition.createCriteria().andAccountEqualTo(account.getAccount());
 		List<Account> list = accountMapper.selectByExample(condition);
@@ -52,11 +46,7 @@ public class AccountServiceImpl implements AccountService {
 
 	@Override
 	public AppResp<Object> register(Account account) {
-		log.debug("login");
-		AppResp<Object> validate = validate(account);
-		if (validate != null) {
-			return validate;
-		}
+		log.debug("register");
 		AccountExample condition = new AccountExample();
 		condition.createCriteria().andAccountEqualTo(account.getAccount());
 		List<Account> list = accountMapper.selectByExample(condition);
@@ -64,20 +54,11 @@ public class AccountServiceImpl implements AccountService {
 			return new AppResp<Object>("账号已存在");
 
 		User user = new User();
-		user.setName("新用户");
-		int userId = userMapper.insert(user);
-		log.debug("userId = " + userId);
-		account.setUserid(userId);
-		return new AppResp<Object>(account);
-	}
+		userMapper.insert(user);
+		account.setUserid(user.getId());
+		log.debug("id = " + user.getId());
+		accountMapper.insert(account);
 
-	private AppResp<Object> validate(Account account) {
-		if (TextUtils.isEmpty(account.getAccount())) {
-			return new AppResp<Object>("账号不能为空");
-		}
-		if (TextUtils.isEmpty(account.getPasswd())) {
-			return new AppResp<Object>("密码不能空");
-		}
-		return null;
+		return new AppResp<Object>(account);
 	}
 }

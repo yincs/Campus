@@ -2,6 +2,13 @@ package org.changs.campus.domain;
 
 import javax.validation.constraints.NotNull;
 
+import org.changs.campus.api.valid.ValidAccountLogin;
+import org.changs.campus.api.valid.ValidAccountRegister;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class Account {
 	/**
 	 *
@@ -19,7 +26,7 @@ public class Account {
 	 *
 	 * @mbg.generated
 	 */
-	@NotNull(message = "account 不能为空")
+	@NotNull(message = "账号不能为空", groups = { ValidAccountLogin.class, ValidAccountRegister.class })
 	private String account;
 
 	/**
@@ -29,6 +36,7 @@ public class Account {
 	 *
 	 * @mbg.generated
 	 */
+	@NotNull(message = "密码不能为空", groups = { ValidAccountLogin.class, ValidAccountRegister.class })
 	private String passwd;
 
 	/**
