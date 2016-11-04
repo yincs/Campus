@@ -15,6 +15,7 @@ import org.changs.campus.domain.User;
 import org.changs.campus.service.AccountService;
 import org.changs.campus.utils.ListUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -45,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
+	@Transactional
 	public AppResp<Object> register(Account account) {
 		log.debug("register");
 		AccountExample condition = new AccountExample();
@@ -56,9 +58,7 @@ public class AccountServiceImpl implements AccountService {
 		User user = new User();
 		userMapper.insert(user);
 		account.setUserid(user.getId());
-		log.debug("id = " + user.getId());
 		accountMapper.insert(account);
-
-		return new AppResp<Object>(account);
+		return new AppResp<Object>(user);
 	}
 }
