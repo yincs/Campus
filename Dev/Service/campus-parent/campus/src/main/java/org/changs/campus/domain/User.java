@@ -2,6 +2,10 @@ package org.changs.campus.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.changs.campus.api.valid.ValidUserModify;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -13,6 +17,7 @@ public class User {
      *
      * @mbg.generated
      */
+	@NotNull(message = "用户id不能为空", groups = { ValidUserModify.class })
     private Integer id;
 
     /**

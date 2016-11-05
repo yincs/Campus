@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.changs.campus.constants.Global;
+import org.changs.campus.exception.CampusException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindException;
@@ -25,7 +26,9 @@ public class BaseController {
 	public @ResponseBody AppResp<Object> exp(HttpServletRequest request, Exception ex) {
 		log.debug("exp" + ex);
 		AppResp<Object> responseInfo = new AppResp<>(Global.CODE.ERROR, Global.DES.ERROR);
-		if (ex instanceof HttpMessageConversionException) {
+		if (ex instanceof CampusException) {
+			responseInfo.setDes(ex.getMessage());
+		} else if (ex instanceof HttpMessageConversionException) {
 			responseInfo.setDes("非法参数");
 		} else if (ex instanceof BindException) {
 			BindException bindException = (BindException) ex;
