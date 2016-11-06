@@ -52,7 +52,7 @@
 	<beans profile="production">
 		<context:property-placeholder
 			ignore-unresolvable="true" file-encoding="utf-8"
-			location="classpath:config.properties,classpath:jdbc-xdb-dev.properties" />
+			location="classpath:config.properties,classpath:jdbc.properties" />
 	</beans>
 
 </beans>

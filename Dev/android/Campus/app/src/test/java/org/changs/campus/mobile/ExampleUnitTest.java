@@ -4,6 +4,8 @@ package org.changs.campus.mobile;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.changs.campus.mobile.domain.Account;
+import org.changs.campus.mobile.domain.AppRes;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,7 +65,7 @@ public class ExampleUnitTest {
         Request request = requestBuilder
                 .post(RequestBody.create(MediaType.parse("Application/json"), "{\"id\":112333}"))
                 .url("http://localhost:8080/campus/account/login").tag("test").build();
-        ;
+
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -131,7 +133,7 @@ public class ExampleUnitTest {
                 .filter(new Func1<AppRes<Object>, Boolean>() {//添加通过过滤器
                     @Override
                     public Boolean call(AppRes<Object> objectAppRes) {
-                        if (objectAppRes.code != 0) {
+                        if (objectAppRes.getCode() != 0) {
                             System.out.println("filter = " + objectAppRes.getDes());
                             throw new RuntimeException(objectAppRes.getDes());
                         }
@@ -184,65 +186,5 @@ public class ExampleUnitTest {
         Observable<AppRes<Object>> login(@Body Account account);
     }
 
-
-    public static class AppRes<T> {
-        private int code;
-        private String des;
-        T data;
-
-        public int getCode() {
-            return code;
-        }
-
-        public void setCode(int code) {
-            this.code = code;
-        }
-
-        public String getDes() {
-            return des;
-        }
-
-        public void setDes(String des) {
-            this.des = des;
-        }
-
-        public T getData() {
-            return data;
-        }
-
-        public void setData(T data) {
-            this.data = data;
-        }
-    }
-
-    public static class Account {
-        private String account;
-        private String passwd;
-
-        public Account() {
-        }
-
-        public Account(String account, String passwd) {
-            super();
-            this.account = account;
-            this.passwd = passwd;
-        }
-
-        public String getAccount() {
-            return account;
-        }
-
-        public void setAccount(String account) {
-            this.account = account;
-        }
-
-        public String getPasswd() {
-            return passwd;
-        }
-
-        public void setPasswd(String passwd) {
-            this.passwd = passwd;
-        }
-    }
 
 }

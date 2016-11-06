@@ -12,6 +12,10 @@ public class ValidUtils {
         return email.contains("@");
     }
 
+    public static boolean isEmailAccount(String text) {
+        return text.length() > 4;
+    }
+
     public static boolean isPasswordValid(String password) {
         return password.length() > 4;
     }

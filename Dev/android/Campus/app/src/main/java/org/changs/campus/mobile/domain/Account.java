@@ -4,9 +4,15 @@ package org.changs.campus.mobile.domain;
  * Created by yincs on 2016/11/5.
  */
 
-public class Account {
+
+public class Account extends Entity {
     private String account;
     private String passwd;
+
+    private int userid;
+
+    public Account() {
+    }
 
     public Account(String account, String passwd) {
         this.account = account;
@@ -27,5 +33,13 @@ public class Account {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 }
