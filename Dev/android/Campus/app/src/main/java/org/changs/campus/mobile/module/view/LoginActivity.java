@@ -1,14 +1,17 @@
 package org.changs.campus.mobile.module.view;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.changs.campus.mobile.R;
 import org.changs.campus.mobile.base.databing.BindingActivity;
@@ -16,6 +19,8 @@ import org.changs.campus.mobile.databinding.LoginActBinding;
 import org.changs.campus.mobile.module.contract.LoginContract;
 import org.changs.campus.mobile.module.presenter.LoginPresenterImpl;
 import org.changs.campus.mobile.utils.ValidUtils;
+
+import rx.Subscriber;
 
 /**
  * Created by yincs on 2016/11/5.
@@ -25,6 +30,7 @@ import org.changs.campus.mobile.utils.ValidUtils;
 
 public class LoginActivity extends BindingActivity<LoginActBinding> implements LoginContract.View {
 
+    private static final String TAG = "LoginActivity";
     private LoginContract.Presenter presenter;
 
     @Override
@@ -34,34 +40,67 @@ public class LoginActivity extends BindingActivity<LoginActBinding> implements L
 
     @Override
     public void afterView() {
-        binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+//        granted -> {
+//            if (granted) {
+//                // All requested permissions are granted
+//            } else {
+//                // At least one permission is denied
+//            }
+//        }
+//        binding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                attemptLogin();
+//                getPermission();
+//            }
+//        });
+
+
+        binding.password.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == R.id.login || actionId == EditorInfo.IME_NULL) {
                 attemptLogin();
+                return true;
             }
+            return false;
+        });
+        binding.btnRegister.setOnClickListener(v -> {
+            Log.d(TAG, "v = " + v);
         });
 
-        binding.password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == R.id.login || actionId == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRegisterAct();
-            }
-        });
+        binding.btnRegister.setOnClickListener(v -> startRegisterAct());
 
         presenter = new LoginPresenterImpl(this);
 
-        startActivity(new Intent(this, ModifyUserdataActivity.class));
+//        startActivity(new Intent(this, ModifyUserdataActivity.class));
+    }
+
+    private void getPermission() {
+        RxPermissions.getInstance(this)
+                .request(Manifest.permission.CAMERA,
+                        Manifest.permission.READ_PHONE_STATE)
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+
+                        Log.e(TAG, "onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError");
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            Log.e(TAG, "同意了");
+                        } else {
+                            Log.e(TAG, "不同意");
+                            Toast.makeText(LoginActivity.this, "相机权限已被禁止，无法使用该功能", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void attemptLogin() {

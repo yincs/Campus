@@ -27,7 +27,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -54,7 +56,7 @@ public class ExampleUnitTest {
         okHttpClient = builder.build();
 
         retrofit = new Retrofit.Builder().client(okHttpClient).baseUrl("http://localhost:8080/campus/")
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.newThread()))
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
     }
@@ -66,17 +68,19 @@ public class ExampleUnitTest {
                 .post(RequestBody.create(MediaType.parse("Application/json"), "{\"id\":112333}"))
                 .url("http://localhost:8080/campus/account/login").tag("test").build();
 
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        final Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("onFailure");
+                System.out.println("onFailure    " + e.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                System.out.println("onResponse" + response.body().string());
+                System.out.println("onResponse   " + response.body().string());
             }
         });
+        call.cancel();
 
         try {
             Thread.sleep(2000);
@@ -101,6 +105,7 @@ public class ExampleUnitTest {
                 System.out.println("onFailure " + t.getMessage());
             }
         });
+        login.cancel();
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e1) {
@@ -110,7 +115,9 @@ public class ExampleUnitTest {
 
     @Test
     public void testRxJava() {
-        retrofit.create(HttpLoginRx.class).login(new Account("yincs", "123456"))
+        final Subscription subscription = retrofit
+                .create(HttpLoginRx.class)
+                .login(new Account("yincs", "123456"))
                 .subscribe(new Subscriber<HashMap<String, Object>>() {
 
                     public void onCompleted() {
@@ -118,13 +125,20 @@ public class ExampleUnitTest {
                     }
 
                     public void onError(Throwable arg0) {
-                        System.out.println("onError" + arg0.getMessage());
+                        System.out.println("onError  " + arg0.getMessage());
                     }
 
                     public void onNext(HashMap<String, Object> arg0) {
-                        System.out.println("onNext " + arg0.get("des"));
+                        System.out.println("onNext   " + arg0.get("des"));
                     }
-                }).unsubscribe();
+                });
+        subscription.unsubscribe();
+
+        try {
+            Thread.sleep(120000);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
     }
 
     @Test
